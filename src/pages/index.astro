@@ -1,0 +1,33 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Home - Your Name">
+  <h1>Your Name</h1>
+  
+  <p><strong>Software Engineer | [Your Title]</strong></p>
+  
+  <p>
+    Welcome to my personal website. This is a no-nonsense portfolio showcasing my work,
+    experience, and technical writing.
+  </p>
+
+  <h2>About</h2>
+  <p>
+    [Brief introduction about yourself. Keep it concise and professional. 
+    Mention your primary skills, interests, and what you're currently working on.]
+  </p>
+
+  <h2>Quick Links</h2>
+  <ul>
+    <li><a href="/experience">Work Experience</a></li>
+    <li><a href="/projects">Personal Projects</a></li>
+    <li><a href="/blog">Engineering Blog</a></li>
+  </ul>
+
+  <hr>
+
+  <p>
+    <em>Last updated: {new Date().toLocaleDateString()}</em>
+  </p>
+</BaseLayout>
