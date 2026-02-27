@@ -2,8 +2,16 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 
-const projects = (await getCollection('projects')).sort(
+const projectsCollection = (await getCollection('projects')).sort(
   (a, b) => (b.data.date?.valueOf() || 0) - (a.data.date?.valueOf() || 0)
+);
+
+// Render content for each project
+const projects = await Promise.all(
+  projectsCollection.map(async (project) => ({
+    ...project,
+    Content: (await project.render()).Content,
+  }))
 );
 ---
 
@@ -20,28 +28,35 @@ const projects = (await getCollection('projects')).sort(
   {projects.length === 0 ? (
     <p><em>No projects yet. Check back soon!</em></p>
   ) : (
-    projects.map((project) => (
-      <div class="project-item">
-        <h2>{project.data.title}</h2>
-        {project.data.date && (
-          <p class="meta">{project.data.date.toLocaleDateString()}</p>
-        )}
-        <p>{project.data.description}</p>
-        
-        {project.data.technologies && project.data.technologies.length > 0 && (
-          <p><strong>Technologies:</strong> {project.data.technologies.join(', ')}</p>
-        )}
+    projects.map((project) => {
+      const { Content } = project;
+      return (
+        <div class="project-item">
+          <h2>{project.data.title}</h2>
+          {project.data.date && (
+            <p class="meta">{project.data.date.toLocaleDateString()}</p>
+          )}
+          <p>{project.data.description}</p>
+          
+          {project.data.technologies && project.data.technologies.length > 0 && (
+            <p><strong>Technologies:</strong> {project.data.technologies.join(', ')}</p>
+          )}
 
-        <div style="margin-top: 1em;">
-          {project.data.github && (
-            <a href={project.data.github} target="_blank">Source Code</a>
-          )}
-          {project.data.github && project.data.demo && <span> | </span>}
-          {project.data.demo && (
-            <a href={project.data.demo} target="_blank">Live Demo</a>
-          )}
+          <div style="margin-top: 1em;">
+            {project.data.github && (
+              <a href={project.data.github} target="_blank">Source Code</a>
+            )}
+            {project.data.github && project.data.demo && <span> | </span>}
+            {project.data.demo && (
+              <a href={project.data.demo} target="_blank">Live Demo</a>
+            )}
+          </div>
+
+          <div style="margin-top: 1em;">
+            <Content />
+          </div>
         </div>
-      </div>
-    ))
+      );
+    })
   )}
 </BaseLayout>
