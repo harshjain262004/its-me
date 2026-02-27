@@ -1,5 +1,18 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const projectsCollection = (await getCollection('projects')).sort(
+  (a, b) => (b.data.date?.valueOf() || 0) - (a.data.date?.valueOf() || 0)
+);
+
+// Render content for each project
+const projects = await Promise.all(
+  projectsCollection.map(async (project) => ({
+    ...project,
+    Content: (await project.render()).Content,
+  }))
+);
 ---
 
 <BaseLayout title="Personal Projects" description="Showcase of personal programming projects">
@@ -10,60 +23,40 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     solve interesting problems, or just for fun.
   </p>
 
-  <div class="project-item">
-    <h2><a href="https://github.com/yourusername/project1">Project Name #1</a></h2>
-    <p class="meta">Date | Status: Active/Completed/In Progress</p>
-    <p>
-      Brief description of the project. What problem does it solve? What motivated
-      you to build it?
-    </p>
-    <p><strong>Technical details:</strong></p>
-    <ul>
-      <li>Technology stack used</li>
-      <li>Key features implemented</li>
-      <li>Challenges overcome</li>
-    </ul>
-    <p>
-      <a href="https://github.com/yourusername/project1">Source Code</a> |
-      <a href="https://demo-url.com">Live Demo</a>
-    </p>
-  </div>
-
-  <div class="project-item">
-    <h2><a href="https://github.com/yourusername/project2">Project Name #2</a></h2>
-    <p class="meta">Date | Status: Active/Completed</p>
-    <p>
-      Description of another project.
-    </p>
-    <p><strong>Technical details:</strong></p>
-    <ul>
-      <li>Technology stack</li>
-      <li>Key features</li>
-    </ul>
-    <p>
-      <a href="https://github.com/yourusername/project2">Source Code</a>
-    </p>
-  </div>
-
-  <div class="project-item">
-    <h2><a href="https://github.com/yourusername/project3">Project Name #3</a></h2>
-    <p class="meta">Date | Status: Completed</p>
-    <p>
-      Description of a third project.
-    </p>
-    <p><strong>Technical details:</strong></p>
-    <ul>
-      <li>Technology stack</li>
-      <li>What you learned</li>
-    </ul>
-    <p>
-      <a href="https://github.com/yourusername/project3">Source Code</a>
-    </p>
-  </div>
-
   <hr>
 
-  <p>
-    More projects available on my <a href="https://github.com/yourusername">GitHub profile</a>.
-  </p>
+  {projects.length === 0 ? (
+    <p><em>No projects yet. Check back soon!</em></p>
+  ) : (
+    projects.map((project) => {
+      const { Content } = project;
+      return (
+        <div class="project-item">
+          <h2>{project.data.title}</h2>
+          {project.data.date && (
+            <p class="meta">{project.data.date.toLocaleDateString()}</p>
+          )}
+          <p>{project.data.description}</p>
+          
+          {project.data.technologies && project.data.technologies.length > 0 && (
+            <p><strong>Technologies:</strong> {project.data.technologies.join(', ')}</p>
+          )}
+
+          <div style="margin-top: 1em;">
+            {project.data.github && (
+              <a href={project.data.github} target="_blank">Source Code</a>
+            )}
+            {project.data.github && project.data.demo && <span> | </span>}
+            {project.data.demo && (
+              <a href={project.data.demo} target="_blank">Live Demo</a>
+            )}
+          </div>
+
+          <div style="margin-top: 1em;">
+            <Content />
+          </div>
+        </div>
+      );
+    })
+  )}
 </BaseLayout>
