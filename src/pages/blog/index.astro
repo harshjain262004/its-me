@@ -8,14 +8,7 @@ const posts = (await getCollection('blog')).sort(
 ---
 
 <BaseLayout title="Engineering Blog" description="Technical blog posts and articles">
-  <h1>Engineering Blog</h1>
-
-  <p>
-    Thoughts on software engineering, technical deep-dives, and things I've learned
-    along the way.
-  </p>
-
-  <hr>
+  <h1>Engineering Blog <span style="font-size: 0.5em; font-weight: normal; display: block;">Thoughts on software engineering, technical deep-dives, and things I've learned along the way.</span></h1>
 
   {posts.length === 0 ? (
     <p><em>No blog posts yet. Check back soon!</em></p>
