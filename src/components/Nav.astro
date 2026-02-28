@@ -1,8 +1,16 @@
+---
+const currentPath = new URL(Astro.request.url).pathname;
+
+const isActive = (href: string) => {
+  return currentPath === href || currentPath === href + '/';
+};
+---
+
 <nav>
   <ul>
-    <li><a href="/">Home</a></li>
-    <li><a href="/experience">Experience</a></li>
-    <li><a href="/projects">Projects</a></li>
-    <li><a href="/blog">Blog</a></li>
+    <li><a href="/" class={isActive('/') ? 'active' : ''}>Home</a></li>
+    <li><a href="/experience" class={isActive('/experience') ? 'active' : ''}>Experience</a></li>
+    <li><a href="/projects" class={isActive('/projects') ? 'active' : ''}>Projects</a></li>
+    <li><a href="/blog" class={isActive('/blog') ? 'active' : ''}>Blog</a></li>
   </ul>
 </nav>
