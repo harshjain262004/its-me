@@ -10,11 +10,11 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     <p class="meta">Fampay | Jan 2026 - Present</p>
     <p><strong>Key contributions:</strong></p>
     <ul>
-      <li></li>
-      <li></li>
-      <li></li>
+      <li>Building and maintaining a read only service for handling data and their updates throughtout the app using postgres publications and custom wal consumers. (Handling 8m+ payments daily)</li>
+      <li>Built temporal workflows, running daily to reconcile data inconsistencies across microservices, handling high-volume data processing.</li>
+      <li>Made fail-safe lambda functions to create, update and delete a rds instances from automated backups.</li>
     </ul>
-    <p><strong>Technologies:</strong> Golang, Postgres, Valkey, Kubernetes, Kafka, AWS</p>
+    <p><strong>Technologies:</strong> Golang, Postgres, DynamoDb, Kubernetes, Kafka, AWS Lambdas.</p>
   </div>
 
   <div class="experience-item">
@@ -38,7 +38,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         Optimized Docker image using multi-stage builds, reducing image size by <strong>50%</strong> and improving deployment times.
       </li>
     </ul>
-    <p><strong>Technologies:</strong> Golang, gRPC, Postgres, Opensearch, Kafka, Docker</p>
+    <p><strong>Technologies:</strong> Golang, gRPC, Postgres, Opensearch, Kafka, Docker.</p>
   </div>
 
   <h2>Education</h2>
